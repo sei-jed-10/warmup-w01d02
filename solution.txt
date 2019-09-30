@@ -1,0 +1,139 @@
+cd mystery
+head -n 20 people
+Alicia Fuentes  F       48      Walton Street, line 433
+Jo-Ting Losev   F       46      Hemenway Street, line 390
+Elena Edmonds   F       58      Elmwood Avenue, line 123
+Naydene Cabral  F       46      Winthrop Street, line 454
+Dato Rosengren  M       22      Mystic Street, line 477
+Fernanda Serrano        F       37      Redlands Road, line 392
+Emiliano Wenk   M       90      Paulding Street, line 490
+Larry Lapin     M       71      Atwill Road, line 298
+Jakub Gondos    M       61      Mitchell Street, line 187
+Derek Kazanin   M       55      Tennis Road, line 440
+Jens Tuimalealiifano    M       83      Rockwood Street, line 205
+Nikola Kadhi    M       75      Glenville Avenue, line 226
+
+
+grep "CLUE" crimescene
+CLUE: Footage from an ATM security camera is blurry but shows that the perpetrator is a tall male, at least 6'.
+CLUE: Found a wallet believed to belong to the killer: no ID, just loose change, and membership cards for AAA, Delta SkyMiles, the local library, and the Museum of Bash History. The cards are totally untraceable and have no name, for some reason.
+CLUE: Questioned the barista at the local coffee shop. He said a woman left right before they heard the shots. The name on her latte was Annabel, she had blond spiky hair and a New Zealand accent.
+
+
+$ grep "Annabel" people
+Annabel Sun     F       26      Hart Place, line 40
+Oluwasegun Annabel      M       37      Mattapan Street, line 173
+Annabel Church  F       38      Buckingham Place, line 179
+Annabel Fuglsang        M       40      Haley Street, line 176
+
+
+$ grep "Annabel" vehicles
+Owner: Oluwasegun Annabel
+Owner: Annabel Church
+Owner: Annabel Sun
+Owner: Annabel Fuglsang
+
+To find the suspects, the following commands were used:
+cat Hart Place
+cat Mattapan Street
+cat Buckingham Place - Suspect
+cat Haley Street - Suspect
+
+
+Read interview file 1
+$ head -n 179 Buckingham_Place | tail -n 1
+SEE INTERVIEW #699607
+$ cat interview-699607
+Interviewed Ms. Church at 2:04 pm.  Witness stated that she did not see anyone she could identify as the shooter, that she ran away as soon as the shots 
+were fired.
+
+However, she reports seeing the car that fled the scene.  Describes it as a blue Honda, with a license plate that starts with "L337" and ends with "9"
+
+Read interview file 2
+$ head -n 176 Haley_Street | tail -n 1
+SEE INTERVIEW #871877
+$ cat interview-871877
+Mr. Fuglsang is male and has brown hair.  Not the witness from the cafe.
+
+Locate vehicles starting with License plate numbers L337 and narrow down to the vehicles that matches interview #699607
+$ grep -A 5 "L337" vehicles
+License Plate L337QE9
+Make: Honda
+Color: Blue
+Owner: Erika Owens
+Height: 6'5"
+Weight: 220 lbs
+--
+License Plate L337DV9
+Make: Honda
+Color: Blue
+Owner: Joe Germuska
+Height: 6'2"
+Weight: 164 lbs
+--
+License Plate L3375A9
+Make: Honda
+Color: Blue
+Owner: Jeremy Bowers
+Height: 6'1"
+Weight: 204 lbs
+--
+License Plate L337WR9
+Make: Honda
+Color: Blue
+Owner: Jacqui Maher
+Height: 6'2"
+Weight: 130 lbs
+
+
+One by one from the narrowed down vehicle list, identify owner with linkage to membership cards for AAA, Delta SkyMiles, the local library, 
+and the Museum of Bash History:
+$ cat AAA Delta_SkyMiles Terminal_City_Library Museum_of_Bash_History | grep -c "Erika Owens"
+0
+
+$ cat AAA Delta_SkyMiles Terminal_City_Library Museum_of_Bash_History | grep -c "Aron Pilhofer"
+3
+$ grep "Aron Pilhofer" people
+Aron Pilhofer   M       16      Claybourne Street, line 145
+
+
+$ cat AAA Delta_SkyMiles Terminal_City_Library Museum_of_Bash_History | grep -c "Heather Billings"
+2
+$ grep "Heather Billings" people
+Heather Billings        F       38      Culbert Street, line 19
+
+$ cat AAA Delta_SkyMiles Terminal_City_Library Museum_of_Bash_History | grep -c "Jacqui Maher"
+4
+$ grep "Jacqui Maher" people
+Jacqui Maher    F       40      Andover Road, line 224
+
+$ cat AAA Delta_SkyMiles Terminal_City_Library Museum_of_Bash_History | grep -c "Joe Germuska"
+2
+$ grep "Joe Germuska" people
+Joe Germuska    M       65      Plainfield Street, line 275
+
+
+$ cat AAA Delta_SkyMiles Terminal_City_Library Museum_of_Bash_History | grep -c "Jeremy Bowers"
+4
+$ grep "Jeremy Bowers" people
+Jeremy Bowers   M       34      Dunstable Road, line 284
+FROM THE ABOVE RESULTS, WE CAN NARROW THE SUSPECTS DOWN TO TWO PERSONS - Joe Germuska & Jeremy Bowers
+
+Locate interview number from the 2 suspects narrowed down and open the interview file
+$ head -n 275 Plainfield_Street | tail -n 1
+SEE INTERVIEW #29741223
+$ cat interview-29741223
+Should not be considered a suspect, has no SkyMiles membership and has never been a member of the Museum of Bash History.
+
+
+$ head -n 284 Dunstable_Road | tail -n 1
+SEE INTERVIEW #9620713
+$ cat interview-9620713
+Home appears to be empty, no answer at the door.
+
+After questioning neighbors, appears that the occupant may have left for a trip recently.
+
+Considered a suspect until proven otherwise, but would have to eliminate other suspects to confirm.
+
+
+MURDER FOUND - JEREMY BOWERS
