@@ -57,6 +57,14 @@ cat instructions
 * Commit your solution file
 * Push your changes to your forked repo
 * Create a pull request to submit your deliverable
+* In your pull request description:
+Deliverable Submission
+
+Please describe your comfort and completeness levels before submitting.
+
+	1. Comfort Level (1-5):
+	2. Completeness Level (1-5):
+	3. What did you think of this deliverable?:
 
 ### Credits
 By Noah Veltman
